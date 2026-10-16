@@ -1,0 +1,14 @@
+# Node.js
+node_modules/
+
+# Playwright MCP cache
+.playwright-mcp/
+
+# Test reports
+test-report-*.md
+
+public/
+
+package.json
+
+server.js
