@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Demo Login</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="card">
+    <h1>Вход</h1>
+
+    <form id="loginForm">
+      <label>
+        Имя пользователя
+        <input type="text" id="username" name="username" placeholder="admin">
+      </label>
+
+      <label>
+        Пароль
+        <input type="password" id="password" name="password" placeholder="••••••">
+      </label>
+
+      <button type="submit">Войти</button>
+    </form>
+
+    <!-- ❌ БАГ 9: ссылка ведёт на несуществующую страницу -->
+    <a href="/forgot-password" class="forgot">Забыли пароль?</a>
+
+    <div id="message"></div>
+  </div>
+
+  <script>
+    const form = document.getElementById('loginForm');
+    const message = document.getElementById('message');
+
+    // ❌ БАГ 10: нет блокировки кнопки при отправке (можно спамить)
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const username = document.getElementById('username').value;
+      const password = document.getElementById('password').value;
+
+      const res = await fetch('/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password }),
+      });
+
+      const data = await res.json();
+      message.textContent = data.success ? data.message : data.error;
+      message.className = data.success ? 'ok' : 'err';
+    });
+  </script>
+</body>
+</html>
